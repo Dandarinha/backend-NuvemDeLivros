@@ -69,6 +69,8 @@ export class AlunoController extends Aluno {
                                         alunoRecebido.email,
                                         alunoRecebido.celular);
 
+                                        console.log(novoAluno);
+
             // Chama a função de cadastro passando o objeto como parâmetro
             const repostaClasse = await Aluno.cadastroAluno(novoAluno);
 
