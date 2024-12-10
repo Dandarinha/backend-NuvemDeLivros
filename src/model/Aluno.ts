@@ -190,4 +190,55 @@ static async cadastroAluno(aluno: Aluno): Promise<boolean> {
         return false;
     }
 }
+static async removerAluno(idAluno : number): Promise<boolean>{
+  try{
+      const queryDeleteAluno  = `DELETE FROM aluno  WHERE id_aluno  = ${idAluno }`;
+
+      const respostaBD = await database.query(queryDeleteAluno);
+
+      if(respostaBD.rowCount != 0) {
+          console.log('Aluno removido com sucesso!');
+          return true;
+       } return false;
+
+  } catch (error) {
+      console.log('Erro ao remover aluno . Verifique os logs para mais detalhes.');
+      console.log(error);
+      return false;
+  }
 }
+
+static async atualizarAluno(aluno: Aluno): Promise<boolean> {
+  try {
+      // Criação da query SQL para atualizar os campos do aluno na tabela 'aluno'
+      const queryUpdateAluno = `UPDATE aluno SET
+                             nome = '${aluno.getNome()}', 
+                             sobrenome = '${aluno.getSobrenome()}', 
+                             data_nascimento = '${aluno.getDataNascimento()}', 
+                             endereco = '${aluno.getEndereco()}', 
+                             email = '${aluno.getEmail()}',
+                             celular = '${aluno.getCelular()}'
+                             WHERE id_aluno = ${aluno.getIdAluno()};`;
+
+      // Executa a consulta SQL no banco de dados e armazena o resultado
+      const respostaBD = await database.query(queryUpdateAluno);
+
+      // Verifica se algum registro foi alterado pela operação de atualização
+      if (respostaBD.rowCount != 0) {
+          // Loga uma mensagem indicando que o aluno foi atualizado com sucesso
+          console.log(`Aluno atualizado com sucesso! ID: ${aluno.getIdAluno()}`);
+          return true; // Retorna verdadeiro para indicar sucesso
+      }
+      // Retorna falso se nenhum registro foi alterado (ID inexistente ou dados idênticos)
+      return false;
+  } catch (error) {
+      // Loga uma mensagem genérica de erro em caso de falha na execução
+      console.log(`Erro ao atualizar aluno. Verifique os logs para mais detalhes.`);
+      // Exibe detalhes do erro para depuração
+      console.log(error);
+      // Retorna falso em caso de falha na execução
+      return false; 
+  }
+}
+}
+

@@ -18,6 +18,11 @@ router.get("/", (req: Request, res: Response) => {
 router.get("/lista/Alunos", AlunoController.todos);
 // Rota para cadastrar um novo Aluno
 router.post("/novo/Aluno", AlunoController.novo);
+// Rota para remover aluno
+router.delete("/alunos/:idAluno", AlunoController.remover);
+// Rota para atualizar a tabela
+router.put("/atualizar/aluno/:idAluno", AlunoController.atualizar);
+
 
 /* 
 * ROTAS PARA LIVROS
@@ -26,12 +31,19 @@ router.post("/novo/Aluno", AlunoController.novo);
 router.get("/lista/livros", LivroController.todos);
 // Rota para cadastrar um novo pedido
 router.post("/novo/livro", LivroController.novo);
+// Rota para remover livro
+router.delete("/livros/:idLivro", LivroController.remover);
+// Rota para atualizar a tabela
+router.put("/atualizar/livro/:idLivro", LivroController.atualizar);
+
 
 /* 
 * ROTAS PARA EMPRESTIMOS
 */ 
 // Rota para listar os EmprestimoControllers
 router.get("/lista/emprestimo", EmprestimoController.todos);
+// Rota para atualizar a tabela
+router.put("/atualizar/emprestimo/:idEmprestimo", EmprestimoController.atualizar);
 
 // exportando as rotas
 export { router };

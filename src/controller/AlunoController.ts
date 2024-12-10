@@ -91,4 +91,52 @@ export class AlunoController extends Aluno {
             return res.status(400).json({ mensagem: "Não foi possível cadastrar o aluno. Entre em contato com o administrador do sistema." });
         }
     }
+
+    static async remover(req: Request, res: Response): Promise <any> {
+        try {
+            const idAluno = parseInt(req.params.idAluno as string);
+            const respostaModelo = await Aluno.removerAluno(idAluno);
+
+            if(respostaModelo) {
+                return res.status(200).json({mensagem: "O Aluno foi removido com sucesso!"});
+            } else {
+                return res.status(400).json({mensagem: "Erro ao remover o Aluno. Entre em contato com o administrador do sistema."})
+            }
+            
+        } catch (error) {
+            console.log(`Erro ao remover um Aluno. ${error}`);
+
+            return res.status(400).json({ mensagem: "Não foi possível remover o aluno. Entre em contato com o administrador do sistema." });
+        }
+}
+
+static async atualizar (req:Request, res:Response): Promise<any> {
+    try {
+        const alunoRecebido: AlunoDTO = req.body;
+        const idAlunoRecebido = parseInt(req.params.idAluno as string);
+        const alunoAtualizado = new Aluno(
+            alunoRecebido.nome,
+            alunoRecebido.sobrenome,
+            alunoRecebido.dataNascimento,
+            alunoRecebido.endereco,
+            alunoRecebido.email,
+            alunoRecebido.celular
+        );
+
+        alunoAtualizado.setIdAluno(idAlunoRecebido);
+
+        const respostaModelo = await Aluno.atualizarAluno(alunoAtualizado)
+
+        if (respostaModelo) {
+            return res.status(200).json({mensagem: "Aluno atualizado com sucesso!"});
+        } else {
+            return res.status(400).json({mensagem: "Não foi possível atualizar o aluno. Entre em contato com o administrador do sistema."})
+        }
+        
+    } catch (error) {
+        console.log(`Erro ao atualizar um aluno. ${error}`);
+
+        return res.status(400).json({ mensagem: "Não foi possível atualizar o aluno. Entre em contato com o administrador do sistema." });
+    }
+}
 }

@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "afa1eb09-9667-47ef-979f-030a09580bde",
+		"name": "BIBLIOTECA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38148765"
+	},
+	"item": [
+		{
+			"name": "CADASTRO",
+			"item": [
+				{
+					"name": "LIVRO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"O Senhor dos Anéis 123\",\r\n    \"autor\": \"J.R.R. Tolkien\",\r\n    \"editora\": \"HarperCollins\",\r\n    \"anoPublicacao\": \"2122\",\r\n    \"isbn\": \"978-0007525546\",\r\n    \"quantTotal\": 11,\r\n    \"quantDisponivel\": 6,\r\n    \"valorAquisicao\": 100,\r\n    \"statusLivroEmprestado\": \"Emprestado\"  \r\n}\r\n\r\n\r\n     ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3332/novo/livro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3332",
+							"path": [
+								"novo",
+								"livro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ALUNO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"nome\": \"Dandara\",\r\n        \"sobrenome\": \"McGregor\",\r\n        \"dataNascimento\" : \"1900-07-12\",\r\n        \"endereco\": \"Rua UFC, 123\",\r\n        \"email\": \"mcgregor@ufc.com\",\r\n        \"celular\": \"16998959876\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3332/novo/aluno",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3332",
+							"path": [
+								"novo",
+								"aluno"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LISTAR",
+			"item": [
+				{
+					"name": "LIVRO",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3332/lista/livros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3332",
+							"path": [
+								"lista",
+								"livros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EMPRESTIMO",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3332/lista/emprestimo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3332",
+							"path": [
+								"lista",
+								"emprestimo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ALUNO",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3332/lista/Alunos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3332",
+							"path": [
+								"lista",
+								"Alunos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

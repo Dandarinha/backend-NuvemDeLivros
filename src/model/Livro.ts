@@ -136,15 +136,15 @@ export class Livro {
             const novoLivro = new Livro(linha.titulo,
                                         linha.autor,
                                         linha.editora,
-                                        linha.anoPublicacao,
+                                        linha.ano_publicacao,
                                         linha.isbn,
-                                        linha.quantTotal,
-                                        linha.quantDisponivel,
-                                        linha.valorAquisicao,
-                                        linha.statusLivroEmprestado);
+                                        linha.quant_total,
+                                        linha.quant_disponivel,
+                                        linha.valor_aquisicao,
+                                        linha.status_livro_emprestado);
 
             // atribui o ID objeto
-            novoLivro.setIdLivro(linha.id_Livro);
+            novoLivro.setIdLivro(linha.id_livro);
 
             // adiciona o objeto na lista
             listaDeLivro.push(novoLivro);
@@ -170,7 +170,7 @@ export class Livro {
 static async cadastroLivro(Livro: Livro): Promise<any> {
     try {
         // query para fazer insert de um Livro no banco de dados
-        const queryInsertLivro = `INSERT INTO Livro (titulo, autor, editora, ano_publicacao, isbn, quant_Total, quant_Disponivel, valor_Aquisicao, status_livro_emprestado)
+        const queryInsertLivro = `INSERT INTO Livro (titulo, autor, editora, ano_publicacao, isbn, quant_total, quant_disponivel, valor_aquisicao, status_livro_emprestado)
                                     VALUES
                                     ( 
                                     '${Livro.getTitulo()}', 
@@ -183,14 +183,16 @@ static async cadastroLivro(Livro: Livro): Promise<any> {
                                      ${Livro.getValorAquisicao()},
                                     '${Livro.getStatusLivroEmprestado()}'
                                     )
-                                    RETURNING id_Livro;`;
+                                    RETURNING id_livro;`;
+
+      console.log(queryInsertLivro);
 
         // executa a query no banco e armazena a resposta
         const respostaBD = await database.query(queryInsertLivro);
 
         // verifica se a quantidade de linhas modificadas é diferente de 0
         if (respostaBD.rowCount != 0) {
-            console.log(`Livro cadastrado com sucesso! ID do Livro: ${respostaBD.rows[0].id_Livro}`);
+            console.log(`Livro cadastrado com sucesso! ID do Livro: ${respostaBD.rows[0].id_livro}`);
             // true significa que o cadastro foi feito
             return true;
         }
@@ -206,5 +208,59 @@ static async cadastroLivro(Livro: Livro): Promise<any> {
         // retorno um valor falso
         return false;
     }
+}
+
+static async removerLivro(idLivro : number): Promise<boolean>{
+  try{
+      const queryDeleteLivro  = `DELETE FROM livro  WHERE id_livro  = ${idLivro }`;
+
+      const respostaBD = await database.query(queryDeleteLivro );
+
+      if(respostaBD.rowCount != 0) {
+          console.log('Livro  removido com sucesso!');
+          return true;
+       } return false;
+
+  } catch (error) {
+      console.log('Erro ao remover livro . Verifique os logs para mais detalhes.');
+      console.log(error);
+      return false;
+  }
+}
+
+static async atualizarLivro(livro: Livro): Promise<boolean> {
+  try {
+      // Criação da query SQL para atualizar os campos do livro na tabela 'livro'
+      const queryUpdateLivro = `UPDATE livro SET
+                             titulo = '${livro.getTitulo()}', 
+                             autor = '${livro.getAutor()}',
+                             editora = '${livro.getEditora()}',
+                             ano_publicacao = '${livro.getAnoPublicacao()}',
+                             isbn = '${livro.getIsbn()}',    
+                             quant_total = ${livro.getQuantTotal()},
+                             quant_disponivel = ${livro.getQuantDisponivel()},
+                             valor_aquisicao = ${livro.getValorAquisicao()},
+                             status_livro_emprestado = '${livro.getStatusLivroEmprestado()}'
+                             WHERE id_livro = ${livro.getIdLivro()};`;
+
+      // Executa a consulta SQL no banco de dados e armazena o resultado
+      const respostaBD = await database.query(queryUpdateLivro);
+
+      // Verifica se algum registro foi alterado pela operação de atualização
+      if (respostaBD.rowCount != 0) {
+          // Loga uma mensagem indicando que o livro foi atualizado com sucesso
+          console.log(`Livro atualizado com sucesso! ID: ${livro.getIdLivro()}`);
+          return true; // Retorna verdadeiro para indicar sucesso
+      }
+      // Retorna falso se nenhum registro foi alterado (ID inexistente ou dados idênticos)
+      return false;
+  } catch (error) {
+      // Loga uma mensagem genérica de erro em caso de falha na execução
+      console.log(`Erro ao atualizar livro. Verifique os logs para mais detalhes.`);
+      // Exibe detalhes do erro para depuração
+      console.log(error);
+      // Retorna falso em caso de falha na execução
+      return false; 
+  }
 }
 }

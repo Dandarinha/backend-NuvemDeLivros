@@ -107,4 +107,34 @@ export class Emprestimo {
         return null;
     }
   }
+
+  static async atualizarEmprestimo(emprestimo: Emprestimo): Promise<boolean> {
+    try {
+        // Criação da query SQL para atualizar os campos do emprestimo na tabela 'emprestimo'
+        const queryUpdateEmprestimo = `UPDATE emprestimo SET
+                               data_emprestimo = '${emprestimo.getDataEmprestimo()}', 
+                               data_devolucao = '${emprestimo.getDataDevolucao()}',
+                               status_emprestimo = '${emprestimo.getStatusEmprestimo()}';`;
+
+        // Executa a consulta SQL no banco de dados e armazena o resultado
+        const respostaBD = await database.query(queryUpdateEmprestimo);
+
+        // Verifica se algum registro foi alterado pela operação de atualização
+        if (respostaBD.rowCount != 0) {
+            // Loga uma mensagem indicando que o emprestimo foi atualizado com sucesso
+            console.log(`Emprestimo atualizado com sucesso! ID: ${emprestimo.getIdEmprestimo()}`);
+            return true; // Retorna verdadeiro para indicar sucesso
+        }
+        // Retorna falso se nenhum registro foi alterado (ID inexistente ou dados idênticos)
+        return false;
+    } catch (error) {
+        // Loga uma mensagem genérica de erro em caso de falha na execução
+        console.log(`Erro ao atualizar emprestimo. Verifique os logs para mais detalhes.`);
+        // Exibe detalhes do erro para depuração
+        console.log(error);
+        // Retorna falso em caso de falha na execução
+        return false; 
+    }
 }
+}
+
